@@ -52,6 +52,8 @@ public class Plugin {
 		LuaValue output = somePlugin.globals.get(LuaValue.valueOf("Initialize"));
 		
 		// Call function and return value
-		return output.call(somePlugin.cPluginObject.luaValue).equals(LuaValue.TRUE);
+		LuaValue functionOutput = output.call(somePlugin.cPluginObject.luaValue);
+		
+		return functionOutput.equals(LuaValue.TRUE);
 	}
 }
