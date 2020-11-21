@@ -12,6 +12,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jme.JmePlatform;
 
 import cuberiteAPI.cGlobals;
+import cuberiteAPI.cPlayer;
 import cuberiteAPI.cPlugin;
 import cuberiteAPI.cPluginManager;
 
@@ -36,8 +37,11 @@ public class Plugin {
 		// Add Globals
 		cGlobals.initialize(this, globals);
 		
-		// Create cPluginManager
+		// Add cPluginManager
 		new cPluginManager(this, globals);
+		
+		// Add cPlayer
+		new cPlayer(globals);
 		
 		// Read all scripts
 		File[] listOfFiles = directory.listFiles();
@@ -49,7 +53,7 @@ public class Plugin {
 			String script = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
 			
 			// Load Script
-			LuaValue output = globals.load(new StringReader(script), "main.lua");
+			LuaValue output = globals.load(new StringReader(script), file.getName());
 			
 			// Call script
 			output.call();

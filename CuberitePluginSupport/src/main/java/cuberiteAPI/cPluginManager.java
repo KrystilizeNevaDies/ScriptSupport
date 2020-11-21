@@ -107,8 +107,10 @@ public class cPluginManager {
 				function = v2;
 			}
 			
-			// try add hook and log error
-			try {addHook(hook, function);} catch (Exception e) {e.printStackTrace();}
+			if (function.isfunction())
+				addHook(hook, function);
+			else
+				System.out.println("ERROR: cPluginManager: AddHook(" + hook + ", " + function + "): function is not a function");
 			
 			return LuaValue.NIL;
 		}
@@ -687,6 +689,9 @@ public class cPluginManager {
 
 		@Override
 		public boolean process(CommandSender sender, String command, String[] args) {
+			if (sender.isConsole()) {
+				return false;
+			}
 			// Create table of args
 			LuaTable split = LuaTable.tableOf();
 			split.add(LuaValue.valueOf(command));
@@ -699,6 +704,7 @@ public class cPluginManager {
 			if (callback.call(split, new cPlayer(sender.asPlayer()).luaValue).equals(LuaValue.FALSE)) {
 				sender.sendMessage("Unknown command.");
 			}
+			
 			return true;
 		}
 

@@ -1,10 +1,13 @@
 package cuberiteAPI;
 
+import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
+import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 
+import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 
 public class cPlayer {
@@ -33,7 +36,7 @@ public class cPlayer {
 	    Adds the specified number to the food exhaustion. Only positive numbers expected.
 	    */
 	    public LuaValue call(LuaValue luaPlayer, LuaValue number) {
-	    	player.setFoodSaturation(number.tofloat());
+	    	player.setFoodSaturation(player.getFoodSaturation() + number.tofloat());
 	        return LuaValue.NIL;
 	    }
 	}
@@ -41,8 +44,7 @@ public class cPlayer {
 	class CalcLevelFromXp extends OneArgFunction {
 	    /**
 	    CalcLevelFromXp
-	    XPAmountnumber
-	    number
+	    XPAmountnumber number
 	    (STATIC) Returns the level which is reached with the specified amount of XP. Inverse of XpForLevel().
 	    */
 	    public LuaValue call(LuaValue number) {
@@ -74,8 +76,7 @@ public class cPlayer {
 	    Returns if the player is able to fly.
 	    */
 	    public LuaValue call(LuaValue luaPlayer) {
-	        System.out.println("cPlayer:CanFly() is not yet implemented");
-	        return LuaValue.NIL;
+	        return LuaValue.valueOf(player.isAllowFlying());
 	    }
 	}
 
@@ -86,19 +87,19 @@ public class cPlayer {
 	    Returns if the player can be targeted by mobs.
 	    */
 	    public LuaValue call(LuaValue luaPlayer) {
-	        System.out.println("cPlayer:CanMobsTarget() is not yet implemented");
-	        return LuaValue.NIL;
+	        return LuaValue.valueOf(player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR);
 	    }
 	}
 
-	class CloseWindow extends OneArgFunction {
+	class CloseWindow extends TwoArgFunction {
 	    /**
 	    CloseWindow
 	    CanRefuseboolean
 	    Closes the currently open UI window. If CanRefuse is true (default), the window may refuse the closing.
 	    */
-	    public LuaValue call(LuaValue luaPlayer) {
-	        System.out.println("cPlayer:CloseWindow() is not yet implemented");
+	    public LuaValue call(LuaValue luaPlayer, LuaValue canRefuse) {
+	    	// TODO: add window refusal
+	    	player.closeInventory();
 	        return LuaValue.NIL;
 	    }
 	}
@@ -106,40 +107,41 @@ public class cPlayer {
 	class CloseWindowIfID extends OneArgFunction {
 	    /**
 	    CloseWindowIfID
-	    WindowIDnumber
-	    CanRefuseboolean
+	    WindowID number
+	    CanRefuse boolean
 	    Closes the currently open UI window if its ID matches the given ID. If CanRefuse is true (default), the window may refuse the closing.
 	    */
 	    public LuaValue call(LuaValue luaPlayer) {
+	    	// TODO: cWindow
 	        System.out.println("cPlayer:CloseWindowIfID() is not yet implemented");
 	        return LuaValue.NIL;
 	    }
 	}
 
-	class DeltaExperience extends OneArgFunction {
+	class DeltaExperience extends TwoArgFunction {
 	    /**
 	    DeltaExperience
-	    DeltaXPnumber
-	    number
+	    DeltaXP number
 	    Adds or removes XP from the current XP amount. Won't allow XP to go negative. Returns the new experience, -1 on error (XP overflow).
 	    */
-	    public LuaValue call(LuaValue luaPlayer) {
-	        System.out.println("cPlayer:DeltaExperience() is not yet implemented");
+	    public LuaValue call(LuaValue luaPlayer, LuaValue delta) {
+	        player.setExp(player.getExp() + delta.tofloat());
 	        return LuaValue.NIL;
 	    }
 	}
 
-	class Feed extends OneArgFunction {
+	class Feed extends ThreeArgFunction {
 	    /**
 	    Feed
-	    AddFoodnumber
-	    AddSaturationnumber
+	    AddFood number
+	    AddSaturation number
 	    boolean
 	    Tries to add the specified amounts to food level and food saturation level (only positive amounts expected). Returns true if player was hungry and the food was consumed, false if too satiated.
 	    */
-	    public LuaValue call(LuaValue luaPlayer) {
-	        System.out.println("cPlayer:Feed() is not yet implemented");
-	        return LuaValue.NIL;
+	    public LuaValue call(LuaValue luaPlayer, LuaValue food, LuaValue saturation) {
+	    	player.setFood(player.getFood() + food.toint());
+	    	player.setFoodSaturation(player.getFoodSaturation() + saturation.toint());
+	        return LuaValue.TRUE;
 	    }
 	}
 
@@ -1358,8 +1360,7 @@ public class cPlayer {
 	class XpForLevel extends OneArgFunction {
 	    /**
 	    XpForLevel
-	    XPLevelnumber
-	    number
+	    XPLevelnumber number
 	    (STATIC) Returns the total amount of XP needed for the specified XP level. Inverse of CalcLevelFromXp().
 	    */
 	    public LuaValue call(LuaValue XPLevelnumber) {
@@ -1375,6 +1376,25 @@ public class cPlayer {
 	    }
 	}
 	
+	/**
+	 * Static Initialization
+	 * @param globals 
+	 */
+	public cPlayer(Globals globals) {
+		
+		luaValue = LuaValue.tableOf();
+		
+		luaValue.set("CalcLevelFromXp", new CalcLevelFromXp());
+		luaValue.set("PermissionMatches", new PermissionMatches());
+		luaValue.set("XpForLevel", new XpForLevel());
+		
+		globals.set("cPlayer", luaValue);
+	}
+	
+	/**
+	 * Dynamic Initialization
+	 * @param somePlayer
+	 */
 	public cPlayer(Player somePlayer) {
 		
 		player = somePlayer;
