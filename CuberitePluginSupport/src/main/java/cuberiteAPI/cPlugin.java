@@ -11,39 +11,16 @@ public class cPlugin {
 	//                      Java API                     //
 	///////////////////////////////////////////////////////
 	
-	private String name;
-	
-	private String folderName;
-	
-	private Double version;
-	
-	private ePluginStatus status;
-	
-	private String error;
-	
 	public LuaValue luaValue;
 	
 	public cPlugin(String folder, Globals globals) {
-		status = ePluginStatus.psDisabled;
-		name = folder;
-		folderName = folder;
-		version = 0.0;
-		luaValue = LuaValue.tableOf(); 
+		luaValue = LuaValue.tableOf();
+		luaValue.set("Status", LuaValue.valueOf(ePluginStatus.psDisabled));
+		luaValue.set("Name", LuaValue.valueOf(folder));
+		luaValue.set("FolderName", LuaValue.valueOf(folder));
+		luaValue.set("Version", LuaValue.valueOf(0.0));
 		registerCallbacks();
-		status = ePluginStatus.psLoaded;
-	}
-	
-	public String GetName() {
-		return name;
-	}
-	
-
-	public String getError() {
-		return error;
-	}
-
-	public void setError(String error) {
-		this.error = error;
+		luaValue.set("Status", LuaValue.valueOf(ePluginStatus.psLoaded));
 	}
 	
 	
@@ -62,7 +39,7 @@ public class cPlugin {
 	 */
 	class GetFolderName extends OneArgFunction {
 		public LuaValue call(LuaValue plugin) {
-			return LuaValue.valueOf(folderName);
+			return plugin.get("FolderName");
 		}
 	}
 	
@@ -77,7 +54,7 @@ public class cPlugin {
 	 */
 	class GetLoadError extends OneArgFunction {
 		public LuaValue call(LuaValue plugin) {
-			return LuaValue.valueOf(error);
+			return plugin.get("Error");
 		}
 	}
 
@@ -92,7 +69,7 @@ public class cPlugin {
 	 */
 	class GetLocalFolder extends OneArgFunction {
 		public LuaValue call(LuaValue plugin) {
-			return LuaValue.valueOf(System.getProperty("user.dir") + "\\CuberitePlugins\\" + folderName + "\\");
+			return LuaValue.valueOf(System.getProperty("user.dir") + "\\CuberitePlugins\\" + plugin.get("FolderName").toString() + "\\");
 		}
 	}
 	
@@ -107,7 +84,7 @@ public class cPlugin {
 	 */
 	class GetName extends OneArgFunction {
 		public LuaValue call(LuaValue plugin) {
-			return LuaValue.valueOf(name);
+			return plugin.get("Name");
 		}
 	}
 
@@ -122,7 +99,7 @@ public class cPlugin {
 	 */
 	class GetStatus extends OneArgFunction {
 		public LuaValue call(LuaValue plugin) {
-			return LuaValue.valueOf(ePluginStatus.getID(status));
+			return plugin.get("Status");
 		}
 	}
 
@@ -137,7 +114,7 @@ public class cPlugin {
 	 */
 	class GetVersion extends OneArgFunction {
 		public LuaValue call(LuaValue plugin) {
-			return LuaValue.valueOf(version);
+			return plugin.get("Version");
 		}
 	}
 
@@ -150,7 +127,7 @@ public class cPlugin {
 	 */
 	class IsLoaded extends OneArgFunction {
 		public LuaValue call(LuaValue plugin) {
-			return LuaValue.valueOf(status == ePluginStatus.psLoaded);
+			return LuaValue.valueOf(plugin.get("Status").toint() == ePluginStatus.psLoaded);
 		}
 	}
 
@@ -165,11 +142,7 @@ public class cPlugin {
 	 */
 	class SetName extends TwoArgFunction {
 		public LuaValue call(LuaValue plugin, LuaValue value) {
-			if (value.isstring()) {
-				name = value.tojstring();
-			} else {
-				System.out.println("Error in cPlugin:SetName() - Arg 2 is not a string");
-			}
+			plugin.set("Name", value);
 			return LuaValue.NIL;
 		}
 	}
@@ -185,12 +158,8 @@ public class cPlugin {
 	 */
 	class SetVersion extends TwoArgFunction {
 		public LuaValue call(LuaValue plugin, LuaValue value) {
-			if (value.isnumber()) {
-				version = value.todouble();
-			} else {
-				System.out.println("Error in cPlugin:SetVersion() - Arg 2 is not a number");
-			}
-			return null;
+			plugin.set("Version", value);
+			return LuaValue.NIL;
 		}
 	}
 	
@@ -202,7 +171,7 @@ public class cPlugin {
 		luaValue.set("GetName", 		new GetName());
 		luaValue.set("GetStatus", 		new GetStatus());
 		luaValue.set("GetVersion", 		new GetVersion());
-		luaValue.set("IsLoaded", 		new  IsLoaded());
+		luaValue.set("IsLoaded", 		new IsLoaded());
 		luaValue.set("SetName", 		new SetName());
 		luaValue.set("SetVersion", 		new SetVersion());
 	}

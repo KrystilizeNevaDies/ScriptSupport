@@ -2,18 +2,29 @@ package cuberitePluginSupport;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
+import cuberiteAPI.hooks.HookManager;
 import net.minestom.server.extensions.Extension;
 
 public class CuberitePluginSupport extends Extension {
 
-	public static ArrayList<Plugin> loadedPlugins = new ArrayList<Plugin>();
+	public static Map<UUID, Plugin> loadedPlugins = new HashMap<UUID, Plugin>();
 	
 	@Override
 	public void preInitialize() {
-		
 		System.out.println("Loading Cuberite Plugins");
+		
+		// Prepare API (Other Extensions Should Prepare Their Api Here Too)
+		HookManager.registerHooks();
+		
+	}
+	
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
 		
 		// Get list of files in plugins folder
 		File folder = new File("CuberitePlugins");
@@ -24,7 +35,9 @@ public class CuberitePluginSupport extends Extension {
 		    if (directory.isDirectory()) {
 		        try {
 		        	// Create new plugin and add it to the plugin list
-		        	loadedPlugins.add(new Plugin(directory));
+		        	Plugin plugin = new Plugin(directory);
+		        	
+		        	loadedPlugins.put(plugin.uuid, plugin);
 				} catch (IOException e) {
 					System.out.println("ERROR in cuberite plugin '" + directory.getName() + "'");
 					e.printStackTrace();
@@ -34,20 +47,14 @@ public class CuberitePluginSupport extends Extension {
 	}
 	
 	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
 	public void postInitialize() {
 		initializePlugins();
 	}
 	
 	public void initializePlugins() {
-		loadedPlugins.forEach(somePlugin -> {
+		loadedPlugins.forEach((uuid, somePlugin) -> {
 			if (!Plugin.initialize(somePlugin)) {
-				System.out.println("Initialize failed in plugin: " + somePlugin.cPluginObject.GetName());
+				System.out.println("Initialize failed in plugin: " + somePlugin.cPluginObject.luaValue.get("Name").toString());
 			};
 		});
 	}
