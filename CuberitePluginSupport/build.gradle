@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     
-    compile 'com.github.Minestom:Minestom:758c132'
+    compile 'com.github.Minestom:Minestom:a8c1c73'
     
     compile 'com.github.luaj:luaj:daf3da9'
     

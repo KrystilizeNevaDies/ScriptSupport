@@ -1,4 +1,16 @@
 {
-  "entrypoint": "cuberitePluginSupport.CuberitePluginSupport",
-  "name": "CuberitePluginSupport"
+  "entrypoint": "cuberite.plugin.CuberitePluginSupport",
+  "name": "CuberitePluginSupport",
+  "codeModifiers": [
+  ],
+  "dependencies": [
+  ],
+  "externalDependencies": {
+    "repositories": [
+      {"name": "jitpack.io", "url": "https://jitpack.io"}
+    ],
+    "artifacts": [
+      "com.github.luaj:luaj:daf3da9"
+    ]
+  }
 }
