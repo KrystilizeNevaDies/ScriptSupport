@@ -58,11 +58,14 @@ public class Vector3f {
 				vector.get("z").mul(value.tofloat())
 				);
 			} else {
-				return from(
-				vector.get("x").mul(value.get("x").tofloat()),
-				vector.get("y").mul(value.get("y").tofloat()),
-				vector.get("z").mul(value.get("z").tofloat())
-				);
+				double X = vector.get("x").todouble();
+				double Y = vector.get("y").todouble();
+				double Z = vector.get("z").todouble();
+				
+				vector.set("x", X * value.get("x").tofloat());
+				vector.set("y", Y * value.get("y").tofloat());
+				vector.set("z", Z * value.get("z").tofloat());
+				return LuaValue.NIL;
 			}
 		}
 	}
@@ -456,6 +459,25 @@ public class Vector3f {
 		}
 	}
 	
+	static class Concat extends TwoArgFunction {
+		public LuaValue call(LuaValue vectorA, LuaValue vectorB) {
+			String stringA = vectorA.tojstring();
+			String stringB = vectorB.tojstring();
+			LuaValue valueA = vectorA.getmetatable().get("__tostring");
+			LuaValue valueB = vectorB.getmetatable().get("__tostring");
+			
+			if (valueA.isfunction()) {
+				stringA = valueA.call(vectorA).tojstring();
+			}
+			
+			if (valueB.isfunction()) {
+				stringB = valueB.call(vectorB).tojstring();
+			}
+			
+			return LuaValue.valueOf(stringA.concat(stringB));
+		}
+	}
+	
 	private static LuaValue registerFunctions(LuaValue vector) {
 		// Setup lua metatable
 		LuaValue metatable = LuaValue.tableOf();
@@ -465,6 +487,7 @@ public class Vector3f {
 		metatable.set("__sub", new subtract());
 		metatable.set("__div", new divide());
 		metatable.set("__tostring", new ToString());
+		metatable.set("__concat", new Concat());
 		
 		vector.setmetatable(metatable);
 		

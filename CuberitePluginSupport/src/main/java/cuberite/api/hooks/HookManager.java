@@ -3,9 +3,11 @@ package cuberite.api.hooks;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.luaj.vm2.LuaValue;
+
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.network.packet.client.ClientPlayPacket;
-import net.minestom.server.network.packet.client.play.ClientAnimationPacket;
+import net.minestom.server.network.packet.client.play.ClientPlayerDiggingPacket;
 
 public class HookManager {
 
@@ -53,7 +55,7 @@ public class HookManager {
 		hHOOK_PLAYER_JOINED.INSTANCE.start();
 
 		hHOOK_PLAYER_LEFT_CLICK.INSTANCE.start();
-		mappings.put(ClientAnimationPacket.class, hHOOK_PLAYER_LEFT_CLICK.INSTANCE);
+		mappings.put(ClientPlayerDiggingPacket.class, hHOOK_PLAYER_LEFT_CLICK.INSTANCE);
 
 		hHOOK_PLAYER_MOVING.INSTANCE.start();
 		hHOOK_PLAYER_OPENING_WINDOW.INSTANCE.start();
@@ -100,5 +102,46 @@ public class HookManager {
 		});
 
 	}
+	
+	public static void addHook(Hook hook, LuaValue function) {
+		hook.setFunctions(add(function, hook.getFunctions()));
+	}
+	
+	public static void removeHook(Hook hook, LuaValue function) {
+		hook.setFunctions(remove(function, hook.getFunctions()));
+	}
+	
+	private static LuaValue[] add(LuaValue value, LuaValue[] arr) {
+        // create a new array of size n+1 
+		LuaValue[] newarr = new LuaValue[arr.length + 1]; 
+  
+        // insert the elements from 
+        // the old array into the new array 
+        // insert all elements till n 
+        // then insert x at n+1 
+        for (int i = 0; i < arr.length; i++) 
+            newarr[i] = arr[i]; 
+  
+        newarr[arr.length] = value;
+  
+        return newarr; 
+    }
+	
+	private static LuaValue[] remove(LuaValue value, LuaValue[] arr) {
+		int n = 0;
+        // create a new array of size n+1 
+		LuaValue[] newarr = new LuaValue[arr.length - 1]; 
+  
+        // insert the elements from 
+        // the old array into the new array 
+        // insert all elements till n 
+        for (int i = 0; i < arr.length; i++) 
+        	if (newarr[i] != value) {
+        		newarr[i] = arr[n]; 
+        		n++;
+        	}
+  
+        return newarr; 
+    }
 
 }

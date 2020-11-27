@@ -7,8 +7,19 @@ import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
 
+import net.minestom.server.utils.BlockPosition;
+
 public class Vector3i {
 	
+	public static LuaValue from(BlockPosition blockPosition) {
+		LuaValue vector = LuaValue.tableOf();
+		vector.set("x", LuaValue.valueOf(blockPosition.getX()));
+		vector.set("y", LuaValue.valueOf(blockPosition.getY()));
+		vector.set("z", LuaValue.valueOf(blockPosition.getZ()));
+		registerFunctions(vector);
+		return vector;
+	}
+
 	public static LuaValue from() {
 		LuaValue vector = LuaValue.tableOf();
 		vector.set("x", LuaValue.valueOf(0));
@@ -53,16 +64,19 @@ public class Vector3i {
 		public LuaValue call(LuaValue vector, LuaValue value) {
 			if (value.isnumber()) {
 				return from(
-				vector.get("x").mul(value.toint()),
-				vector.get("y").mul(value.toint()),
-				vector.get("z").mul(value.toint())
+				vector.get("x").mul(value),
+				vector.get("y").mul(value),
+				vector.get("z").mul(value)
 				);
 			} else {
-				return from(
-				vector.get("x").mul(value.get("x").toint()),
-				vector.get("y").mul(value.get("y").toint()),
-				vector.get("z").mul(value.get("z").toint())
-				);
+				double X = vector.get("x").todouble();
+				double Y = vector.get("y").todouble();
+				double Z = vector.get("z").todouble();
+				
+				vector.set("x", Math.floor(X * value.get("x").todouble()));
+				vector.set("y", Math.floor(Y * value.get("y").todouble()));
+				vector.set("z", Math.floor(Z * value.get("z").todouble()));
+				return LuaValue.NIL;
 			}
 		}
 	}
@@ -456,6 +470,25 @@ public class Vector3i {
 		}
 	}
 	
+	static class Concat extends TwoArgFunction {
+		public LuaValue call(LuaValue vectorA, LuaValue vectorB) {
+			String stringA = vectorA.tojstring();
+			String stringB = vectorB.tojstring();
+			LuaValue valueA = vectorA.getmetatable().get("__tostring");
+			LuaValue valueB = vectorB.getmetatable().get("__tostring");
+			
+			if (valueA.isfunction()) {
+				stringA = valueA.call(vectorA).tojstring();
+			}
+			
+			if (valueB.isfunction()) {
+				stringB = valueB.call(vectorB).tojstring();
+			}
+			
+			return LuaValue.valueOf(stringA.concat(stringB));
+		}
+	}
+	
 	private static LuaValue registerFunctions(LuaValue vector) {
 		// Setup lua metatable
 		LuaValue metatable = LuaValue.tableOf();
@@ -465,6 +498,7 @@ public class Vector3i {
 		metatable.set("__sub", new subtract());
 		metatable.set("__div", new divide());
 		metatable.set("__tostring", new ToString());
+		metatable.set("__concat", new Concat());
 		
 		vector.setmetatable(metatable);
 		

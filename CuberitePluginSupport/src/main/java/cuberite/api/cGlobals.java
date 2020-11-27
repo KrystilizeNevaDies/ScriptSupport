@@ -5,6 +5,7 @@ import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
 
 import cuberite.plugin.Plugin;
+import net.minestom.server.instance.block.BlockFace;
 
 public class cGlobals {
 	
@@ -681,7 +682,6 @@ public class cGlobals {
 			return LuaValue.NIL;
 	    }
 	}
-
 
 	public static void initialize(Plugin plugin, LuaValue luaTable) {
 		
@@ -1986,5 +1986,17 @@ public class cGlobals {
 		luaTable.set("SKULL_ROTATION_WEST_NORTH_WEST", LuaValue.valueOf(13)); //
 		luaTable.set("SKULL_ROTATION_WEST_SOUTH_WEST", LuaValue.valueOf(11)); //
 		
+	}
+	
+	public static LuaValue BLOCK_FACE(BlockFace face) {
+		switch (face) {
+		case BOTTOM: return LuaValue.valueOf(0);
+		case EAST: return LuaValue.valueOf(5);
+		case NORTH: return LuaValue.valueOf(2);
+		case SOUTH: return LuaValue.valueOf(3);
+		case TOP: return LuaValue.valueOf(1);
+		case WEST: return LuaValue.valueOf(4);
+		default: return LuaValue.NIL;
+		}
 	}
 }

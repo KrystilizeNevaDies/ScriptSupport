@@ -1,7 +1,5 @@
 package cuberite.api.hooks;
 
-import java.util.ArrayList;
-
 import org.luaj.vm2.LuaValue;
 
 import net.minestom.server.entity.Player;
@@ -10,15 +8,11 @@ import net.minestom.server.network.packet.client.ClientPlayPacket;
 public enum hHOOK_BLOCK_SPREAD implements Hook {
 	INSTANCE;
 
-	private ArrayList<LuaValue> hookList = new ArrayList<LuaValue>();
-
-	public void add(LuaValue function) {
-		hookList.add(function);
-	}
+	private LuaValue[] hookList = {};
 
 	public void start() {
 		// Setup hook logic
-
+		
 	}
 
 	@Override
@@ -26,6 +20,10 @@ public enum hHOOK_BLOCK_SPREAD implements Hook {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override public LuaValue[] getFunctions() {return this.hookList;}
+
+	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
 
 	///////////////////////////////////////
 	// hHOOK_BLOCK_SPREAD //

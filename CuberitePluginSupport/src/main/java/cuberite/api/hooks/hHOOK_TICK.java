@@ -1,6 +1,5 @@
 package cuberite.api.hooks;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.luaj.vm2.LuaValue;
@@ -20,18 +19,18 @@ public enum hHOOK_TICK implements Hook {
 		return null;
 	}
 
-	private ArrayList<LuaValue> hookList = new ArrayList<LuaValue>();
+	private LuaValue[] hookList = {};
 
-	public void add(LuaValue function) {
-		hookList.add(function);
-	}
+	@Override public LuaValue[] getFunctions() {return this.hookList;}
+
+	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
 
 	public void start() {
 		loop();
 	}
 
 	///////////////////////////////////////
-	// HOOK_TICK //
+	//             HOOK_TICK             //
 	///////////////////////////////////////
 
 	Long time = new Date().getTime();
@@ -41,7 +40,7 @@ public enum hHOOK_TICK implements Hook {
 		Long delta = newTime - time;
 		time = newTime;
 		LuaValue[] args = {LuaValue.valueOf(delta)};
-		call(args);
+		call(args, getFunctions());
 
 	}
 

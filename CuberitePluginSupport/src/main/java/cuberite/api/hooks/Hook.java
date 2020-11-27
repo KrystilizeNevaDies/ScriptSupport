@@ -1,8 +1,8 @@
 package cuberite.api.hooks;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
 
@@ -11,39 +11,38 @@ import net.minestom.server.network.packet.client.ClientPlayPacket;
 
 public interface Hook {
 
-	ArrayList<LuaValue> hookList = new ArrayList<LuaValue>();
-
-	default void add(LuaValue function) {
-		hookList.add(function);
+	abstract LuaValue[] getFunctions(); 
+	
+	abstract void setFunctions(LuaValue[] newFunctions);
+	
+	public default void remove(LuaValue function) {
+		LuaValue[] array = getFunctions();
+		ArrayList<LuaValue> list = new ArrayList<LuaValue>(Arrays.asList(array));
+		list.remove(function);
+		array = Arrays.copyOf(list.toArray(), list.toArray().length, LuaValue[].class);;
 	}
 
 	abstract Boolean packetEvent(ClientPlayPacket packet, Player player);
 
-	public void start();
+	abstract public void start();
 
-	public default Varargs call(LuaValue[] args) {
+	public default Varargs call(LuaValue[] args, LuaValue[] functions) {
+		
 		Varargs luaargs = LuaValue.varargsOf(args);
 		
 		Varargs returnValue = null;
 		
-		ArrayList<Object> removeList = new ArrayList<Object>();
-
 		// for each hook
-		for (int i = 0; i < hookList.size(); i++) {
-			LuaValue value = hookList.get(i);
-
+		for (int i = 0; i < functions.length; i++) {
+			LuaValue value = functions[i];
+			
 			if (value.isfunction()) {
 				returnValue = value.invoke(luaargs);
 			} else {
-				// save non-functional callbacks
-				removeList.add(value);
+				remove(value);
 			}
 		}
-
-		// Remove non-functioning callbacks
-		removeList.forEach((object) -> {
-			hookList.remove(object);
-		});
+		
 		return returnValue;
 	}
 }
