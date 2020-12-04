@@ -17,7 +17,7 @@ public enum hHOOK_CHUNK_GENERATED implements Hook {
 
 	public void start() {
 		// Setup hook logic
-
+		
 	}
 
 	@Override

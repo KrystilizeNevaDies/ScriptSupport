@@ -10,6 +10,7 @@ import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 
+import cuberite.plugin.TextType;
 import net.minestom.server.chat.ChatColor;
 import net.minestom.server.chat.ColoredText;
 import net.minestom.server.entity.GameMode;
@@ -959,7 +960,7 @@ public class cPlayer {
 	    Prepends Rose [INFO] / colours entire text (depending on ShouldUseChatPrefixes()) and sends message to player. For a command that failed to run because of insufficient permissions, etc.
 	    */
 	    public LuaValue call(LuaValue luaPlayer, LuaValue value) {
-	    	player.sendMessage(ColoredText.of(ChatColor.RED, "[INFO] " + value.tojstring()));
+	    	player.sendMessage(TextType.FAILURE.create(value));
 	        return LuaValue.NIL;
 	    }
 	}
@@ -971,7 +972,7 @@ public class cPlayer {
 	    Prepends Red [FATAL] / colours entire text (depending on ShouldUseChatPrefixes()) and sends message to player. For something serious, such as a plugin crash, etc.
 	    */
 		public LuaValue call(LuaValue luaPlayer, LuaValue value) {
-	    	player.sendMessage(ColoredText.of(ChatColor.RED, "[FATAL] " + value.tojstring()));
+	    	player.sendMessage(TextType.FATAL.create(value));
 	        return LuaValue.NIL;
 	    }
 	}
@@ -983,7 +984,7 @@ public class cPlayer {
 	    Prepends Yellow [INFO] / colours entire text (depending on ShouldUseChatPrefixes()) and sends message to player. Informational message, such as command usage, etc.
 	    */
 	    public LuaValue call(LuaValue luaPlayer, LuaValue value) {
-	    	player.sendMessage(ColoredText.of(ChatColor.YELLOW, "[INFO] " + value.tojstring()));
+	    	player.sendMessage(TextType.INFO.create(value));
 	        return LuaValue.NIL;
 	    }
 	}
@@ -1005,7 +1006,7 @@ public class cPlayer {
 	    /**
 	    SendMessageRaw
 	    Jsonstring
-	    eChatTypenumber
+	    eChatType number
 	    Sends the specified json string to the player. The optional value eChatType (default ctChatBox) can be ctChatBox, ctSystem or ctAboveActionBar. You can use cJson to build a json string.
 	    */
 	    public LuaValue call(LuaValue luaPlayer, LuaValue value) {
@@ -1021,7 +1022,7 @@ public class cPlayer {
 	    Prepends Green [INFO] / colours entire text (depending on ShouldUseChatPrefixes()) and sends message to player. Success notification.
 	    */
 	    public LuaValue call(LuaValue luaPlayer, LuaValue value) {
-	    	player.sendMessage(ColoredText.of(ChatColor.BRIGHT_GREEN, "[INFO] " + value.tojstring()));
+	    	player.sendMessage(TextType.SUCCESS.create(value));
 	        return LuaValue.NIL;
 	    }
 	}
@@ -1033,7 +1034,7 @@ public class cPlayer {
 	    Prepends Rose [WARN] / colours entire text (depending on ShouldUseChatPrefixes()) and sends message to player. Denotes that something concerning, such as plugin reload, is about to happen.
 	    */
 	    public LuaValue call(LuaValue luaPlayer, LuaValue value) {
-	    	player.sendMessage(ColoredText.of(ChatColor.RED, "[WARN] " + value.tojstring()));
+	    	player.sendMessage(TextType.WARNING.create(value));
 	        return LuaValue.NIL;
 	    }
 	}
@@ -1059,7 +1060,7 @@ public class cPlayer {
 	    Sends the specified message to the player.
 	    */
 	    public LuaValue call(LuaValue luaPlayer, LuaValue value) {
-	    	player.sendMessage(ColoredText.of(ChatColor.BOLD, "[SYSTEM] " + value.tojstring()));
+	    	player.sendMessage(TextType.SYSTEM.create(value));
 	        return LuaValue.NIL;
 	    }
 	}

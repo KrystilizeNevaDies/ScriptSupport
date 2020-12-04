@@ -11,13 +11,8 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jme.JmePlatform;
 
-import cuberite.api.Vector3d;
-import cuberite.api.Vector3f;
-import cuberite.api.Vector3i;
 import cuberite.api.cGlobals;
-import cuberite.api.cPlayer;
 import cuberite.api.cPlugin;
-import cuberite.api.cPluginManager;
 
 public class Plugin {
 	
@@ -39,17 +34,6 @@ public class Plugin {
 		
 		// Add Globals
 		cGlobals.initialize(this, globals);
-		
-		// Add cPluginManager
-		new cPluginManager(this, globals);
-		
-		// Add cPlayer
-		new cPlayer(globals);
-		
-		// Add cVector3d
-		globals.set("Vector3d", new Vector3d.Vector3dConstructor());
-		globals.set("Vector3i", new Vector3i.Vector3iConstructor());
-		globals.set("Vector3f", new Vector3f.Vector3fConstructor());
 		
 		// Read all scripts
 		File[] listOfFiles = directory.listFiles();

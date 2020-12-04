@@ -7,45 +7,9 @@ import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
 
-import net.minestom.server.utils.BlockPosition;
+import cuberite.plugin.cVector;
 
-public class Vector3i {
-	
-	public static LuaValue from(BlockPosition blockPosition) {
-		LuaValue vector = LuaValue.tableOf();
-		vector.set("x", LuaValue.valueOf(blockPosition.getX()));
-		vector.set("y", LuaValue.valueOf(blockPosition.getY()));
-		vector.set("z", LuaValue.valueOf(blockPosition.getZ()));
-		registerFunctions(vector);
-		return vector;
-	}
-
-	public static LuaValue from() {
-		LuaValue vector = LuaValue.tableOf();
-		vector.set("x", LuaValue.valueOf(0));
-		vector.set("y", LuaValue.valueOf(0));
-		vector.set("z", LuaValue.valueOf(0));
-		registerFunctions(vector);
-		return vector;
-	}
-	
-	public static LuaValue from(int X, int Y, int Z) {
-		LuaValue vector = LuaValue.tableOf();
-		vector.set("x", X);
-		vector.set("y", Y);
-		vector.set("z", Z);
-		registerFunctions(vector);
-		return vector;
-	}
-	
-	public static LuaValue from(LuaValue X, LuaValue Y, LuaValue Z) {
-		LuaValue vector = LuaValue.tableOf();
-		vector.set("x", X);
-		vector.set("y", Y);
-		vector.set("z", Z);
-		registerFunctions(vector);
-		return vector;
-	}
+public class Vector3i extends cVector {
 	
 	public static class Vector3iConstructor extends ThreeArgFunction {
 		public LuaValue call(LuaValue X, LuaValue Y, LuaValue Z) {
@@ -489,7 +453,7 @@ public class Vector3i {
 		}
 	}
 	
-	private static LuaValue registerFunctions(LuaValue vector) {
+	protected static void registerFunctions(LuaValue vector) {
 		// Setup lua metatable
 		LuaValue metatable = LuaValue.tableOf();
 		
@@ -527,8 +491,6 @@ public class Vector3i {
 		vector.set("addedY", new addedY());
 		vector.set("addedZ", new addedZ());
 
-		
-		return vector;
 	}
 	
 }

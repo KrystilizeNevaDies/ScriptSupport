@@ -26,11 +26,13 @@ public interface Hook {
 
 	abstract public void start();
 
-	public default Varargs call(LuaValue[] args, LuaValue[] functions) {
+	public default Varargs call(LuaValue[] args) {
 		
 		Varargs luaargs = LuaValue.varargsOf(args);
 		
 		Varargs returnValue = null;
+		
+		LuaValue[] functions = getFunctions();
 		
 		// for each hook
 		for (int i = 0; i < functions.length; i++) {

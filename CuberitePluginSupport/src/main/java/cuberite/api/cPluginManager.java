@@ -2,6 +2,7 @@ package cuberite.api;
 
 import java.util.ArrayList;
 
+import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
@@ -113,7 +114,7 @@ public class cPluginManager {
 			else
 				System.out.println("ERROR: cPluginManager: AddHook(" + hook + ", " + function + "): function is not a function");
 			
-			return LuaValue.NIL;
+			return NIL;
 		}
 	}
 	
@@ -137,7 +138,7 @@ public class cPluginManager {
 			// Create command
 			new PlayerCommand(name, perm, func, help);
 			
-			return LuaValue.TRUE;
+			return TRUE;
 		}
 	}
 	
@@ -151,8 +152,8 @@ public class cPluginManager {
 		 * function(Split)The Split parameter contains an array-table of the words that the admin has typed. If the callback returns true, the command is assumed to have executed successfully; in all other cases the server issues a warning to the console that the command is unknown (this is so that subcommands can be implemented).
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("BindConsoleCommand is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -165,8 +166,8 @@ public class cPluginManager {
 		 * (STATIC) Calls the specified function in the specified plugin, passing all the given arguments to it. If it succeeds, it returns all the values returned by that function. If it fails, returns no value at all. Note that only strings, numbers, bools, nils, API classes and simple tables can be used for parameters and return values; functions cannot be copied across plugins.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("CallPlugin is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -179,8 +180,8 @@ public class cPluginManager {
 		 * function (Plugin)
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("DoWithPlugin is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -192,8 +193,8 @@ public class cPluginManager {
 		 * Executes the command as if given by the specified Player. Checks permissions.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("ExecuteCommand is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -206,8 +207,8 @@ public class cPluginManager {
 		 * FindPlugins			OBSOLETE, use RefreshPluginList() instead
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("ExecuteConsoleCommand is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -219,8 +220,8 @@ public class cPluginManager {
 		 * function(Command, Permission, HelpString)If the callback returns true, the enumeration is aborted and this API function returns false; if it returns false or no value, the enumeration continues with the next command, and the API function returns true.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("ForEachCommand is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -232,8 +233,8 @@ public class cPluginManager {
 		 * function (Command, HelpString)If the callback returns true, the enumeration is aborted and this API function returns false; if it returns false or no value, the enumeration continues with the next command, and the API function returns true.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("ForEachConsoleCommand is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -245,8 +246,8 @@ public class cPluginManager {
 		 * function (Plugin)If the callback returns true, the enumeration is aborted and this API function returns false; if it returns false or no value, the enumeration continues with the next command, and the API function returns true.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("ForEachPlugin is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -258,8 +259,8 @@ public class cPluginManager {
 		 * Same as ExecuteCommand, but doesn't check permissions
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("ForceExecuteCommand is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -279,8 +280,8 @@ public class cPluginManager {
 		 * Returns a table (dictionary) of all plugins, [name => value], where value is a valid cPlugin if the plugin is loaded, or the bool value false if the plugin is not loaded.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("GetAllPlugins is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -291,8 +292,8 @@ public class cPluginManager {
 		 * Returns the permission needed for executing the specified command
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("GetCommandPermission is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -302,8 +303,8 @@ public class cPluginManager {
 		 * Returns the cPlugin object for the calling plugin. This is the same object that the Initialize function receives as the argument.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("GetCurrentPlugin is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -313,8 +314,8 @@ public class cPluginManager {
 		 * Returns the number of loaded plugins (psLoaded only)
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("GetNumLoadedPlugins is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -324,8 +325,8 @@ public class cPluginManager {
 		 * Returns the number of plugins, including the disabled, errored, unloaded and not-found ones
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("GetNumPlugins is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -336,8 +337,8 @@ public class cPluginManager {
 		 * (DEPRECATED, UNSAFE) Returns a plugin handle of the specified plugin, or nil if such plugin is not loaded. Note thatdue to multithreading the handle is not guaranteed to be safe for use when stored - a single-plugin reload may have been triggered in the mean time for the requested plugin.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("GetPlugin is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -348,8 +349,8 @@ public class cPluginManager {
 		 * Returns the name of the folder from which the plugin was loaded (without the "Plugins" part). Used as a plugin's display name.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("GetPluginFolderName is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -359,8 +360,8 @@ public class cPluginManager {
 		 * (STATIC) Returns the path where the individual plugin folders are located. Doesn't include the path separator at the end of the returned string.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("GetPluginsPath is not yet implemented");
+			return valueOf("");
 		}
 	}
 	
@@ -371,8 +372,8 @@ public class cPluginManager {
 		 * Returns true if in-game Command is already bound (by any plugin)
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("IsCommandBound is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -383,8 +384,8 @@ public class cPluginManager {
 		 * Returns true if console Command is already bound (by any plugin)
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("IsConsoleCommandBound is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -394,8 +395,8 @@ public class cPluginManager {
 		 * Returns true if the specified plugin is loaded.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("IsPluginLoaded is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -405,8 +406,8 @@ public class cPluginManager {
 		 * (DEPRECATED) Loads a plugin from the specified folder. NOTE: Loading plugins may be an unsafe operation and may result in a deadlock or a crash. This API is deprecated and might be removed.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("LoadPlugin is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -414,8 +415,8 @@ public class cPluginManager {
 		/**		(STATIC) Logs a current stack trace of the Lua engine to the server console log. Same format as is used when the plugin fails.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("LogStackTrace is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -423,8 +424,8 @@ public class cPluginManager {
 		/**		Refreshes the list of plugins to include all folders inside the Plugins folder (potentially new disabled plugins)
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("RefreshPluginList is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -434,8 +435,8 @@ public class cPluginManager {
 		 * Queues the specified plugin to be reloaded. To avoid deadlocks, the reloading happens in the main tick thread asynchronously.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("ReloadPlugin is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -443,8 +444,8 @@ public class cPluginManager {
 		/**		Reloads all active plugins
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("ReloadPlugins is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -454,8 +455,8 @@ public class cPluginManager {
 		 * Queues the specified plugin to be unloaded. To avoid deadlocks, the unloading happens in the main tick thread asynchronously.
 		 */
 		public LuaValue call(LuaValue value) {
-			System.out.println("This is not yet implemented");
-			return LuaValue.NIL;
+			System.out.println("UnloadPlugin is not yet implemented");
+			return NIL;
 		}
 	}
 	
@@ -538,7 +539,7 @@ public class cPluginManager {
 	
 	
 	
-	public cPluginManager(Plugin somePlugin, LuaValue luaTable) {
+	public cPluginManager(Plugin somePlugin, Globals luaTable) {
 		LuaValue luaValue = LuaValue.tableOf();
 		
 		this.plugin = somePlugin;

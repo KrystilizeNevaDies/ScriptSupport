@@ -7,34 +7,9 @@ import org.luaj.vm2.lib.ThreeArgFunction;
 import org.luaj.vm2.lib.TwoArgFunction;
 import org.luaj.vm2.lib.VarArgFunction;
 
-public class Vector3d {
-	
-	public static LuaValue from() {
-		LuaValue vector = LuaValue.tableOf();
-		vector.set("x", LuaValue.valueOf(0));
-		vector.set("y", LuaValue.valueOf(0));
-		vector.set("z", LuaValue.valueOf(0));
-		registerFunctions(vector);
-		return vector;
-	}
-	
-	public static LuaValue from(double X, double Y, double Z) {
-		LuaValue vector = LuaValue.tableOf();
-		vector.set("x", X);
-		vector.set("y", Y);
-		vector.set("z", Z);
-		registerFunctions(vector);
-		return vector;
-	}
-	
-	public static LuaValue from(LuaValue X, LuaValue Y, LuaValue Z) {
-		LuaValue vector = LuaValue.tableOf();
-		vector.set("x", X);
-		vector.set("y", Y);
-		vector.set("z", Z);
-		registerFunctions(vector);
-		return vector;
-	}
+import cuberite.plugin.cVector;
+
+public class Vector3d extends cVector {
 	
 	public static class Vector3dConstructor extends ThreeArgFunction {
 		public LuaValue call(LuaValue X, LuaValue Y, LuaValue Z) {
@@ -478,7 +453,7 @@ public class Vector3d {
 		}
 	}
 	
-	private static LuaValue registerFunctions(LuaValue vector) {
+	protected static void registerFunctions(LuaValue vector) {
 		// Setup lua metatable
 		LuaValue metatable = LuaValue.tableOf();
 		
@@ -515,9 +490,6 @@ public class Vector3d {
 		vector.set("addedXZ", new addedXZ());
 		vector.set("addedY", new addedY());
 		vector.set("addedZ", new addedZ());
-
-		
-		return vector;
 	}
 	
 }

@@ -30,7 +30,7 @@ public enum hHOOK_PLAYER_JOINED implements Hook {
 			player.addEventCallback(PlayerLoginEvent.class, (event) -> {
 				LuaValue cPlayer = new cPlayer(event.getPlayer()).luaValue;
 				LuaValue[] args = {cPlayer};
-				call(args, getFunctions());
+				call(args);
 			});
 		});
 	}

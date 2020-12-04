@@ -40,7 +40,7 @@ public enum hHOOK_TICK implements Hook {
 		Long delta = newTime - time;
 		time = newTime;
 		LuaValue[] args = {LuaValue.valueOf(delta)};
-		call(args, getFunctions());
+		call(args);
 
 	}
 

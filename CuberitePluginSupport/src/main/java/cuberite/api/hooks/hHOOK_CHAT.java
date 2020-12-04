@@ -24,7 +24,7 @@ public enum hHOOK_CHAT implements Hook {
 			player.addEventCallback(PlayerChatEvent.class, (event) -> {
 				LuaValue cPlayer = new cPlayer(event.getSender()).luaValue;
 				LuaValue[] args = {cPlayer, LuaValue.valueOf(event.getMessage())};
-				call(args, getFunctions());
+				call(args);
 				
 				event.getMessage();
 			});
