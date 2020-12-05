@@ -1,6 +1,5 @@
 package cuberite.api.hooks;
 
-
 import org.luaj.vm2.LuaValue;
 
 import cuberite.api.cPlayer;
@@ -13,16 +12,22 @@ public enum hHOOK_COLLECTING_PICKUP implements Hook {
 
 	private LuaValue[] hookList = {};
 
-	@Override public LuaValue[] getFunctions() {return this.hookList;}
+	@Override
+	public LuaValue[] getFunctions() {
+		return this.hookList;
+	}
 
-	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
+	@Override
+	public void setFunctions(LuaValue[] newFunctions) {
+		this.hookList = newFunctions;
+	}
 
+	@Override
 	public void start() {
 		// Setup hook logic
 		MinecraftServer.getConnectionManager().addPlayerInitialization((player) -> {
-			LuaValue[] args = {
-				new cPlayer(player).luaValue,
-				// TODO: cPickup here
+			LuaValue[] args = { new cPlayer(player).luaValue,
+					// TODO: cPickup here
 			};
 			call(args);
 		});
@@ -34,9 +39,7 @@ public enum hHOOK_COLLECTING_PICKUP implements Hook {
 		return null;
 	}
 
-	
-
 	///////////////////////////////////////
-	//      hHOOK_COLLECTING_PICKUP      //
+	// hHOOK_COLLECTING_PICKUP //
 	///////////////////////////////////////
 }

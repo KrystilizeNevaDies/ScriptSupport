@@ -1,6 +1,5 @@
 package cuberite.api.hooks;
 
-
 import org.luaj.vm2.LuaValue;
 
 import net.minestom.server.MinecraftServer;
@@ -13,10 +12,17 @@ public enum hHOOK_DISCONNECT implements Hook {
 
 	private LuaValue[] hookList = {};
 
-	@Override public LuaValue[] getFunctions() {return this.hookList;}
+	@Override
+	public LuaValue[] getFunctions() {
+		return this.hookList;
+	}
 
-	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
+	@Override
+	public void setFunctions(LuaValue[] newFunctions) {
+		this.hookList = newFunctions;
+	}
 
+	@Override
 	public void start() {
 		// Setup hook logic
 		MinecraftServer.getConnectionManager().addPlayerInitialization((player) -> {
@@ -31,8 +37,6 @@ public enum hHOOK_DISCONNECT implements Hook {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 	///////////////////////////////////////
 	// hHOOK_DISCONNECT //

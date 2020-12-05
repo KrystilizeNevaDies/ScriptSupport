@@ -21,16 +21,23 @@ public enum hHOOK_TICK implements Hook {
 
 	private LuaValue[] hookList = {};
 
-	@Override public LuaValue[] getFunctions() {return this.hookList;}
+	@Override
+	public LuaValue[] getFunctions() {
+		return this.hookList;
+	}
 
-	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
+	@Override
+	public void setFunctions(LuaValue[] newFunctions) {
+		this.hookList = newFunctions;
+	}
 
+	@Override
 	public void start() {
 		loop();
 	}
 
 	///////////////////////////////////////
-	//             HOOK_TICK             //
+	// HOOK_TICK //
 	///////////////////////////////////////
 
 	Long time = new Date().getTime();
@@ -39,7 +46,7 @@ public enum hHOOK_TICK implements Hook {
 		Long newTime = new Date().getTime();
 		Long delta = newTime - time;
 		time = newTime;
-		LuaValue[] args = {LuaValue.valueOf(delta)};
+		LuaValue[] args = { LuaValue.valueOf(delta) };
 		call(args);
 
 	}

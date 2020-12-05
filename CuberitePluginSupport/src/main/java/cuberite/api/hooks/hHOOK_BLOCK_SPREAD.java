@@ -10,9 +10,10 @@ public enum hHOOK_BLOCK_SPREAD implements Hook {
 
 	private LuaValue[] hookList = {};
 
+	@Override
 	public void start() {
 		// Setup hook logic
-		
+
 	}
 
 	@Override
@@ -21,9 +22,15 @@ public enum hHOOK_BLOCK_SPREAD implements Hook {
 		return null;
 	}
 
-	@Override public LuaValue[] getFunctions() {return this.hookList;}
+	@Override
+	public LuaValue[] getFunctions() {
+		return this.hookList;
+	}
 
-	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
+	@Override
+	public void setFunctions(LuaValue[] newFunctions) {
+		this.hookList = newFunctions;
+	}
 
 	///////////////////////////////////////
 	// hHOOK_BLOCK_SPREAD //

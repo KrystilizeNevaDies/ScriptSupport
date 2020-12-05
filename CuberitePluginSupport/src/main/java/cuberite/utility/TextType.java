@@ -1,4 +1,4 @@
-package cuberite.plugin;
+package cuberite.utility;
 
 import org.luaj.vm2.LuaValue;
 
@@ -13,19 +13,19 @@ public class TextType {
 	public static final TextType SUCCESS = new TextType(ChatColor.BRIGHT_GREEN, "[INFO] ");
 	public static final TextType WARNING = new TextType(ChatColor.RED, "[WARN] ");
 	public static final TextType SYSTEM = new TextType(ChatColor.BOLD, "[SYSTEM] ");
-	
+
 	private String prefix;
 	private ChatColor color;
-	
+
 	private TextType(ChatColor someColor, String string) {
 		prefix = string;
 		color = someColor;
 	}
-	
+
 	public ColoredText create(String string) {
 		return ColoredText.of(color, prefix.concat(string));
 	}
-	
+
 	public ColoredText create(LuaValue string) {
 		return create(string.tojstring());
 	}

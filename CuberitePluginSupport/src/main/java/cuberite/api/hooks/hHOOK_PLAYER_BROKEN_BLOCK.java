@@ -1,6 +1,5 @@
 package cuberite.api.hooks;
 
-
 import org.luaj.vm2.LuaValue;
 
 import net.minestom.server.entity.Player;
@@ -15,17 +14,26 @@ public enum hHOOK_PLAYER_BROKEN_BLOCK implements Hook {
 		return null;
 	}
 
-	
-
 	private LuaValue[] hookList = {};
 
-	@Override public LuaValue[] getFunctions() {return this.hookList;}
+	@Override
+	public LuaValue[] getFunctions() {
+		return this.hookList;
+	}
 
-	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
+	@Override
+	public void setFunctions(LuaValue[] newFunctions) {
+		this.hookList = newFunctions;
+	}
 
+	@Override
 	public void start() {
 		// Setup hook logic
 
+	}
+
+	public void doEvent(LuaValue[] args) {
+		call(args);
 	}
 
 	///////////////////////////////////////

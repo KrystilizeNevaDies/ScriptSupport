@@ -1,6 +1,5 @@
 package cuberite.api.hooks;
 
-
 import org.luaj.vm2.LuaValue;
 
 import cuberite.api.cPlayer;
@@ -14,18 +13,25 @@ public enum hHOOK_CHAT implements Hook {
 
 	private LuaValue[] hookList = {};
 
-	@Override public LuaValue[] getFunctions() {return this.hookList;}
+	@Override
+	public LuaValue[] getFunctions() {
+		return this.hookList;
+	}
 
-	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
+	@Override
+	public void setFunctions(LuaValue[] newFunctions) {
+		this.hookList = newFunctions;
+	}
 
+	@Override
 	public void start() {
 		// Setup hook logic
 		MinecraftServer.getConnectionManager().addPlayerInitialization((player) -> {
 			player.addEventCallback(PlayerChatEvent.class, (event) -> {
 				LuaValue cPlayer = new cPlayer(event.getSender()).luaValue;
-				LuaValue[] args = {cPlayer, LuaValue.valueOf(event.getMessage())};
+				LuaValue[] args = { cPlayer, LuaValue.valueOf(event.getMessage()) };
 				call(args);
-				
+
 				event.getMessage();
 			});
 		});

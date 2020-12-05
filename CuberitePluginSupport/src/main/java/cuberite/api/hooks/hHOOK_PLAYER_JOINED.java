@@ -1,6 +1,5 @@
 package cuberite.api.hooks;
 
-
 import org.luaj.vm2.LuaValue;
 
 import cuberite.api.cPlayer;
@@ -20,16 +19,23 @@ public enum hHOOK_PLAYER_JOINED implements Hook {
 
 	private LuaValue[] hookList = {};
 
-	@Override public LuaValue[] getFunctions() {return this.hookList;}
+	@Override
+	public LuaValue[] getFunctions() {
+		return this.hookList;
+	}
 
-	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
+	@Override
+	public void setFunctions(LuaValue[] newFunctions) {
+		this.hookList = newFunctions;
+	}
 
+	@Override
 	public void start() {
 		// Setup hook logic
 		MinecraftServer.getConnectionManager().addPlayerInitialization((player) -> {
 			player.addEventCallback(PlayerLoginEvent.class, (event) -> {
 				LuaValue cPlayer = new cPlayer(event.getPlayer()).luaValue;
-				LuaValue[] args = {cPlayer};
+				LuaValue[] args = { cPlayer };
 				call(args);
 			});
 		});

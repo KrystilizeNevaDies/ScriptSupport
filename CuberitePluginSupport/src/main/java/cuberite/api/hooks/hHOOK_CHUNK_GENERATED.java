@@ -1,6 +1,5 @@
 package cuberite.api.hooks;
 
-
 import org.luaj.vm2.LuaValue;
 
 import net.minestom.server.entity.Player;
@@ -11,13 +10,20 @@ public enum hHOOK_CHUNK_GENERATED implements Hook {
 
 	private LuaValue[] hookList = {};
 
-	@Override public LuaValue[] getFunctions() {return this.hookList;}
+	@Override
+	public LuaValue[] getFunctions() {
+		return this.hookList;
+	}
 
-	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
+	@Override
+	public void setFunctions(LuaValue[] newFunctions) {
+		this.hookList = newFunctions;
+	}
 
+	@Override
 	public void start() {
 		// Setup hook logic
-		
+
 	}
 
 	@Override
@@ -25,8 +31,6 @@ public enum hHOOK_CHUNK_GENERATED implements Hook {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 	///////////////////////////////////////
 	// hHOOK_CHUNK_GENERATED //

@@ -1,6 +1,5 @@
 package cuberite.api.hooks;
 
-
 import org.luaj.vm2.LuaValue;
 
 import cuberite.api.cPlayer;
@@ -14,30 +13,33 @@ public enum hHOOK_EXECUTE_COMMAND implements Hook {
 
 	private LuaValue[] hookList = {};
 
-	@Override public LuaValue[] getFunctions() {return this.hookList;}
+	@Override
+	public LuaValue[] getFunctions() {
+		return this.hookList;
+	}
 
-	@Override public void setFunctions(LuaValue[] newFunctions) {this.hookList = newFunctions;}
+	@Override
+	public void setFunctions(LuaValue[] newFunctions) {
+		this.hookList = newFunctions;
+	}
 
+	@Override
 	public void start() {
 		// Setup hook logic
 		MinecraftServer.getConnectionManager().addPlayerInitialization((player) -> {
 			player.addEventCallback(PlayerCommandEvent.class, (event) -> {
 				String command = event.getCommand();
-				
+
 				String[] stringSplit = command.split("");
-				
+
 				LuaValue[] split = {};
-				
+
 				for (int i = 0; i < stringSplit.length; i++) {
 					split[i] = LuaValue.valueOf(stringSplit[i]);
 				}
-				
-				LuaValue[] args = {
-					new cPlayer(player).luaValue,
-					LuaValue.tableOf(split),
-					LuaValue.valueOf(command)
-				};
-				
+
+				LuaValue[] args = { new cPlayer(player).luaValue, LuaValue.tableOf(split), LuaValue.valueOf(command) };
+
 				call(args);
 			});
 		});
@@ -48,8 +50,6 @@ public enum hHOOK_EXECUTE_COMMAND implements Hook {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 	///////////////////////////////////////
 	// hHOOK_EXECUTE_COMMAND //
