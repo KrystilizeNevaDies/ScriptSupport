@@ -9,28 +9,25 @@ import java.util.UUID;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
-
-import cuberite.api.cGlobals;
-import cuberite.api.cPlugin;
 
 public class Plugin {
 
 	// create new globals for each new plugin
 	public Globals globals = JsePlatform.standardGlobals();
 
-	public cPlugin cPluginObject;
-
 	public UUID uuid;
+	
+	public String name;
 
 	public Plugin(File directory) throws IOException {
 		
-		// Set UUID
+		// Set UUID & Name
 		uuid = UUID.randomUUID();
+		name = directory.getName();
+		
 		globals.set("PluginUUID", uuid.toString());
-
-		// Create cPlugin
-		cPluginObject = new cPlugin(directory.getName(), globals);
 
 		// Read all scripts
 		File[] listOfFiles = directory.listFiles();
@@ -49,19 +46,14 @@ public class Plugin {
 			}
 		
 	}
-	
-	public static void implementAPI(Plugin plugin) {
-		// Add Globals
-		cGlobals.initialize(plugin, plugin.globals);
-	}
 
 	public static Boolean initialize(Plugin plugin) {
 
 		// Get Initialize function
-		LuaValue output = plugin.globals.get(LuaValue.valueOf("Initialize"));
+		LuaValue output = plugin.globals.get("Initialize");
 
 		// Call function and return value
-		LuaValue functionOutput = output.call(plugin.cPluginObject.luaValue);
+		LuaValue functionOutput = output.call(CoerceJavaToLua.coerce(plugin));
 
 		return functionOutput.equals(LuaValue.TRUE);
 	}

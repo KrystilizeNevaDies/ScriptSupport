@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import cuberite.api.hooks.HookManager;
-import minestom.api.Autogeneration;
 import net.minestom.server.extensions.Extension;
 
 public class LuaPluginSupport extends Extension {
@@ -18,25 +16,10 @@ public class LuaPluginSupport extends Extension {
 
 	private ArrayList<Consumer<Plugin>> finishers = new ArrayList<Consumer<Plugin>>();
 	
-	@Override
-	public void preInitialize() {
-		System.out.println("Loading Cuberite Plugins");
-
-		HookManager.registerHooks();
-		
-		// Prepare API (Other Extensions Should Prepare Their Api Here Too)
-		
-		// Cuberite
-		addAPI(Plugin::implementAPI);
-		
-		// Minestom
-		addAPI(Autogeneration::Autogenerate);
-	}
+	// Minestom addAPI(Autogeneration::Autogenerate);
 
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
-
 		// Get list of files in plugins folder
 		File folder = new File("CuberitePlugins");
 		File[] listOfFiles = folder.listFiles();
@@ -52,6 +35,7 @@ public class LuaPluginSupport extends Extension {
 					finishers.forEach((consumer) -> {consumer.accept(plugin);});
 					
 					loadedPlugins.put(plugin.uuid, plugin);
+					
 				} catch (IOException e) {
 					System.out.println("ERROR in lua plugin '" + directory.getName() + "'");
 					e.printStackTrace();
@@ -59,16 +43,13 @@ public class LuaPluginSupport extends Extension {
 			}
 		}
 	}
-
+	
 	@Override
 	public void postInitialize() {
-		initializePlugins();
-	}
-
-	public void initializePlugins() {
+		// Initialize plugins
 		loadedPlugins.forEach((uuid, somePlugin) -> {
 			if (!Plugin.initialize(somePlugin)) {
-				System.out.println("Initialize failed in plugin: " + somePlugin.cPluginObject.luaValue.get("Name").toString());
+				System.out.println("Initialize returned non-true in plugin: " + somePlugin.name);
 			};
 		});
 	}
@@ -80,6 +61,6 @@ public class LuaPluginSupport extends Extension {
 	@Override
 	public void terminate() {
 		// TODO Auto-generated method stub
-
+		
 	}
 }
