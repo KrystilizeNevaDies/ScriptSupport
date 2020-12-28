@@ -1,2 +1,2 @@
-# CuberitePluginSupport
- Support for cuberite plugins in minestom.
+# ScriptSupport
+API for scripting languages in minestom
