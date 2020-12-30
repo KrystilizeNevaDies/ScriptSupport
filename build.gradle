@@ -34,8 +34,6 @@ repositories {
 
 dependencies {
     compile 'com.github.Minestom:Minestom:c8154b5'
-    compile 'org.luaj:luaj-jse:3.0.1'
-    
 }
 
 shadowJar {

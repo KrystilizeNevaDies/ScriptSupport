@@ -1,5 +1,5 @@
 {
-  "entrypoint": "lua.plugin.LuaPluginSupport",
+  "entrypoint": "script.plugin.ScriptSupport",
   "name": "LuaPluginSupport",
   "codeModifiers": [
   ],
@@ -7,6 +7,7 @@
   ],
   "externalDependencies": {
     "repositories": [
+      {"name": "Central", "url": "https://repo1.maven.org/maven2/"}
     ],
     "artifacts": [
       "org.luaj:luaj-jse:3.0.1"

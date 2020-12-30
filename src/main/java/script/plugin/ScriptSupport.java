@@ -1,4 +1,4 @@
-package lua.plugin;
+package script.plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,17 +6,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import net.minestom.server.extensions.Extension;
+import script.plugin.language.LanguageAPI;
 
-public class LuaPluginSupport extends Extension {
+public class ScriptSupport extends Extension {
 
 	public static Map<UUID, Plugin> loadedPlugins = new HashMap<UUID, Plugin>();
 
-	private ArrayList<Consumer<Plugin>> finishers = new ArrayList<Consumer<Plugin>>();
-	
-	// Minestom addAPI(Autogeneration::Autogenerate);
+	public static ArrayList<LanguageAPI> apiList = new ArrayList<LanguageAPI>();
 
 	@Override
 	public void initialize() {
@@ -31,13 +29,10 @@ public class LuaPluginSupport extends Extension {
 					// Create new plugin and add it to the plugin list
 					Plugin plugin = new Plugin(directory);
 					
-					// Call API implementations
-					finishers.forEach((consumer) -> {consumer.accept(plugin);});
-					
 					loadedPlugins.put(plugin.uuid, plugin);
 					
 				} catch (IOException e) {
-					System.out.println("ERROR in lua plugin '" + directory.getName() + "'");
+					System.out.println("ERROR in plugin '" + directory.getName() + "'");
 					e.printStackTrace();
 				}
 			}
@@ -54,13 +49,12 @@ public class LuaPluginSupport extends Extension {
 		});
 	}
 	
-	public void addAPI(Consumer<Plugin> consumer) {
-		finishers.add(consumer);
+	public void addAPI(LanguageAPI api) {
+		apiList.add(api);
 	}
 	
 	@Override
 	public void terminate() {
-		// TODO Auto-generated method stub
 		
 	}
 }
