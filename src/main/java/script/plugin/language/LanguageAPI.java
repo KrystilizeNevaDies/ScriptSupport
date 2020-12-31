@@ -96,5 +96,10 @@ public interface LanguageAPI {
 	/**
 	 * Creates a new script-side java object binding
 	 */
-	public LanguageJavaBinding bindingOf(String str);
+	public LanguageJavaBinding<?> objectOf(Object obj);
+	
+	/**
+	 * Creates a new script-side java object binding
+	 */
+	public LanguageJavaBinding<?> classOf(Class<?> cls);
 }

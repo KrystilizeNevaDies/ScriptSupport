@@ -7,15 +7,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import minestom.generation.Autogeneration;
 import net.minestom.server.extensions.Extension;
+import script.plugin.api.ScriptAPI;
 import script.plugin.language.LanguageAPI;
 
 public class ScriptSupport extends Extension {
 
 	public static Map<UUID, Plugin> loadedPlugins = new HashMap<UUID, Plugin>();
 
-	public static ArrayList<LanguageAPI> apiList = new ArrayList<LanguageAPI>();
+	public static ArrayList<ScriptAPI> apiList = new ArrayList<ScriptAPI>();
+	public static ArrayList<LanguageAPI> languageList = new ArrayList<LanguageAPI>();
 
+	@Override
+	public void preInitialize() {
+		this.addAPI(Autogeneration::Autogenerate);
+	}
+	
 	@Override
 	public void initialize() {
 		// Get list of files in plugins folder
@@ -49,8 +57,12 @@ public class ScriptSupport extends Extension {
 		});
 	}
 	
-	public void addAPI(LanguageAPI api) {
+	public void addAPI(ScriptAPI api) {
 		apiList.add(api);
+	}
+	
+	public void addLanguage(LanguageAPI api) {
+		languageList.add(api);
 	}
 	
 	@Override

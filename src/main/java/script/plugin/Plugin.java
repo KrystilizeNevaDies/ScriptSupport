@@ -30,7 +30,7 @@ public class Plugin {
 				String script = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
 				
 				// Run script loading for each api
-				ScriptSupport.apiList.forEach((api) -> {
+				ScriptSupport.languageList.forEach((api) -> {
 					// Check if file is a valid script file
 					if (api.isScript(file, script))
 						// Load script file
@@ -42,9 +42,12 @@ public class Plugin {
 
 	public static boolean initialize(Plugin plugin) {
 		ArrayList<Boolean> returnValues = new ArrayList<Boolean>();
-		ScriptSupport.apiList.forEach((api) -> {
+		ScriptSupport.languageList.forEach((api) -> {
 			if (api.initializePlugin(plugin))
 				returnValues.add(true);
+		});
+		ScriptSupport.apiList.forEach((api) -> {
+			api.implementAPI();
 		});
 		return returnValues.size() > 0;
 	}

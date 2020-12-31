@@ -11,10 +11,4 @@ public interface LanguageNumber extends LanguageObject {
 	 * @return java value of script number
 	 */
 	public Number getJavaValue();
-	
-	
-	/**
-	 * Creates a new script-side Number
-	 */
-	public static LanguageNumber of(Number num) {return null;};
 }
