@@ -1,6 +1,6 @@
 {
   "entrypoint": "script.plugin.ScriptSupport",
-  "name": "LuaPluginSupport",
+  "name": "ScriptSupport",
   "codeModifiers": [
   ],
   "dependencies": [

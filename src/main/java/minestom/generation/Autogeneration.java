@@ -8,21 +8,18 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import script.plugin.ScriptSupport;
 import script.plugin.api.ScriptAPI;
 import script.plugin.api.ScriptSupportAPI;
 
 public class Autogeneration implements ScriptAPI {
 	
-	private static Map<String, String> classesMap = new HashMap<String, String>();
-	
 	private static Boolean triedGenerate = false;
 	
-	public static void Autogenerate() {
+	public static void Autogenerate(ScriptSupport main) {
 		if (!triedGenerate)
 		try {
 			triedGenerate = true;
@@ -30,24 +27,38 @@ public class Autogeneration implements ScriptAPI {
 			System.out.println("STARTING JAVA CLASS GENERATION");
 			System.out.println("------------------------------");
 			ArrayList<String> classes = new ArrayList<String>();
-			Package[] systemPackages = ClassLoader.getSystemClassLoader().getDefinedPackages();
-			Package[] platformPackages = ClassLoader.getPlatformClassLoader().getDefinedPackages();
-			for (int i = 0; i < systemPackages.length; i++) {
-				classes.addAll(getClassNamesFromPackage(systemPackages[i].getName()));
-			}
-			for (int i = 0; i < platformPackages.length; i++) {
-				classes.addAll(getClassNamesFromPackage(platformPackages[i].getName()));
-			}
 			
-			classes.forEach((string) -> {
-				if (string.contains(".class")) {
-					String key = string;
-					String[] split = key.replace(".class", "").split("[/]");
-					classesMap.put(split[split.length - 1], string);
+			// Add Minestom Classes
+			classes.addAll(getClassNamesFromPackage("net.minestom"));
+			
+			// Add Java Classes
+			classes.addAll(getClassNamesFromPackage("java"));
+			
+			
+			
+			classes.forEach((className) -> {
+				if (className.contains(".class")) {
+					
+					String smallClassName = className.replace(".class", "");
+					
+					String[] splitClassName = smallClassName.split("[/]");
+					
+					String name = splitClassName[splitClassName.length - 1].replace("$", "_");
+					
+					// Debug
+					// System.out.println(className + "|" + name);
+					
+					ScriptSupport.loadedPlugins.forEach((uuid, plugin) -> {
+						try {
+							ScriptSupportAPI.setClass(plugin, name, Class.forName(smallClassName.replace("/", ".")));
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
+					});
 				}
 			});
 			System.out.println("------------------------------");
-			System.out.println("FINISHED -> CLASS COUNT: " + classesMap.size());
+			System.out.println("FINISHED -> CLASS COUNT: " + classes.size());
 			System.out.println("------------------------------");
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -108,14 +119,8 @@ public class Autogeneration implements ScriptAPI {
 	}
 
 	@Override
-	public void implementAPI() {
-		Autogenerate();
-		classesMap.forEach((name, path) -> {
-			try {
-				ScriptSupportAPI.setObject(name, Class.forName(path));
-			} catch (ClassNotFoundException e) {
-				System.out.println("Class not found: " + path);
-			}
-		});
+	public void implementAPI(ScriptSupport main) {
+		System.out.println("implementing minestom classes into scripts...");
+		Autogenerate(main);
 	}
 }

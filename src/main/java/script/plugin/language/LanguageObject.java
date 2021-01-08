@@ -5,5 +5,5 @@ public interface LanguageObject {
 	 * Gets the LanguageAPI associated with this Object
 	 * @return
 	 */
-	public LanguageAPI getAPI(); 
+	public LanguageAPI getAPI();
 }

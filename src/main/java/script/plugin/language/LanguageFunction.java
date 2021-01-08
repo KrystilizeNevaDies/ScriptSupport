@@ -2,7 +2,7 @@ package script.plugin.language;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 public interface LanguageFunction extends LanguageObject {
 	/**
@@ -14,10 +14,10 @@ public interface LanguageFunction extends LanguageObject {
 	 * 
 	 * @return java value of script function
 	 */
-	public Consumer<ArrayList<LanguageObject>> getJavaValue();
+	public Function<ArrayList<LanguageObject>, ArrayList<LanguageObject>> getJavaValue();
 	
 	/**
 	 * Calls this script-side function and gets it's return value(s)
 	 */
-	public List<LanguageObject> callFunction(Object... javaObjects);
+	public List<LanguageObject> callFunction(ArrayList<LanguageObject> argsList);
 }

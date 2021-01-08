@@ -1,6 +1,8 @@
 package script.plugin.language;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.function.Function;
 
 import script.plugin.Plugin;
 
@@ -65,18 +67,18 @@ public interface LanguageAPI {
 	/**
 	 * Load a script file and process it's language's syntax 
 	 */
-	public void loadScript(File file, String fileContents);
+	public void loadScript(Plugin plugin, File file, String fileContents);
 	
 	
 	/**	
 	 * Sets a global variable script-side
 	 */
-	public void setGlobal(String name, LanguageObject obj);
+	public void setGlobal(Plugin plugin, String name, LanguageObject obj);
 	
 	/**	
 	 * Gets a global variable script-side
 	 */
-	public LanguageObject getGlobal(String name);
+	public LanguageObject getGlobal(Plugin plugin, String name);
 	
 	/**
 	 * Creates a new script-side string
@@ -94,12 +96,47 @@ public interface LanguageAPI {
 	public LanguageBoolean booleanOf(Boolean bool);
 	
 	/**
-	 * Creates a new script-side java object binding
+	 * Creates a new script-side function binding to a java side function
 	 */
-	public LanguageJavaBinding<?> objectOf(Object obj);
+	public LanguageFunction functionOf(Function<ArrayList<LanguageObject>, ArrayList<LanguageObject>> func);
 	
 	/**
 	 * Creates a new script-side java object binding
 	 */
-	public LanguageJavaBinding<?> classOf(Class<?> cls);
+	public LanguageObject objectOf(Object obj);
+	
+	/**
+	 * Creates a new script-side java object binding
+	 */
+	public LanguageJavaBinding classOf(Class<?> clazz);
+	
+	/**
+	 * Converts a java value to a script-side equivalent
+	 * 
+	 * @param object to be converted
+	 * @return java value
+	 */
+	@SuppressWarnings("unchecked")
+	public default LanguageObject getScriptValue(Object obj) {
+		
+		if (obj instanceof String) return stringOf((String) obj);
+		if (Number.class.isAssignableFrom(obj.getClass())) return numberOf((Number) obj);
+		if (Boolean.class.isAssignableFrom(obj.getClass())) return booleanOf((Boolean) obj);
+		if (obj instanceof Function<?, ?>) return functionOf((Function<ArrayList<LanguageObject>, ArrayList<LanguageObject>>) obj);
+		return objectOf(obj);
+	}
+	
+	/**
+	 * Converts a script-side value to its java equivalent
+	 * @param script object to be converted
+	 * @return java object
+	 */
+	public default Object getJavaValue(LanguageObject object) {
+		if (object instanceof LanguageNumber) {return ((LanguageNumber) object).getJavaValue();};
+		if (object instanceof LanguageString) {return ((LanguageString) object).getJavaValue();};
+		if (object instanceof LanguageBoolean) {return ((LanguageBoolean) object).getJavaValue();};
+		if (object instanceof LanguageFunction) {return ((LanguageFunction) object).getJavaValue();};
+		if (object instanceof LanguageJavaBinding) {return ((LanguageJavaBinding) object).getJavaValue();};
+		return null;
+	}
 }

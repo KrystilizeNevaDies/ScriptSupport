@@ -1,8 +1,5 @@
 package script.plugin.language;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * The most complicated of all language objects.
  * 
@@ -27,9 +24,7 @@ import java.util.Map;
  * @author Krystilize
  * 
  */
-public interface LanguageJavaBinding<T extends Class> extends LanguageObject {
-	
-	public Map<String, LanguageObject> children = new HashMap<String, LanguageObject>();
+public interface LanguageJavaBinding extends LanguageObject {
 	
 	/**
 	 * @return true if the class is static
@@ -40,7 +35,7 @@ public interface LanguageJavaBinding<T extends Class> extends LanguageObject {
 	 * Gets the java-side class of a script-side class
 	 * @return java Class
 	 */
-	public T getJavaClass();
+	public Class<?> getJavaClass();
 	
 	/**
 	 * Gets the java-side path of a script-side class
@@ -51,12 +46,17 @@ public interface LanguageJavaBinding<T extends Class> extends LanguageObject {
 	};
 	
 	/**
-	 * sets a child of this class
+	 * sets a child of this binding
 	 */
-	public void setClassChild(String name, LanguageObject obj);
+	public void setChild(String name, LanguageObject obj);
 	
 	/**
-	 * gets a child of this class
+	 * gets a child of this binding
 	 */
-	public void getClassChild(String name, LanguageObject obj);
+	public LanguageObject getChild(String name);
+
+	/**
+	 * gets the value of this binding
+	 */
+	public Object getJavaValue();
 }
