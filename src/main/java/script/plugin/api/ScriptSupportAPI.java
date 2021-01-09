@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import script.plugin.Plugin;
 import script.plugin.ScriptSupport;
@@ -42,6 +43,12 @@ public class ScriptSupportAPI {
 			lang.setGlobal(plugin, name, lang.objectOf(obj));
 		});
 	}
+	
+	public static void setFunction(Plugin plugin, String name, Function<ArrayList<LanguageObject>, ArrayList<LanguageObject>> func) {
+		langs.forEach((lang) -> {
+			lang.setGlobal(plugin, name, lang.functionOf(func));
+		});
+	};
 	
 	public static void setClass(Plugin plugin, String name, Class<?> clz) {
 		langs.forEach((lang) -> {
@@ -89,8 +96,9 @@ public class ScriptSupportAPI {
 				ArrayList<Object> objects = new ArrayList<Object>();
 				
 				list.forEach((binding) -> {
-					if (binding instanceof LanguageJavaBinding)
-					objects.add(((LanguageJavaBinding) binding).getJavaValue());
+					LanguageAPI api = binding.getAPI();
+					
+					objects.add(api.getJavaValue(binding));
 				});
 				
 				Object[] array = objects.toArray();
@@ -99,12 +107,17 @@ public class ScriptSupportAPI {
 					
 					Object returnValue = method.invoke(clz.getJavaValue(), array);
 					
+					if (returnValue != null)
 					objectList.add(lang.getScriptValue(returnValue));
+					
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					if (e instanceof IllegalArgumentException) {
 						System.out.println("Arguments are not correct for method: " + method.getName());
 						
 						Parameter[] params = method.getParameters();
+						
+						System.out.println("Method params: " + params.length);
+						System.out.println("Given params: " + array.length);
 						
 						for (int j = 0; (j < params.length) || (j < array.length); j++) {
 							try {

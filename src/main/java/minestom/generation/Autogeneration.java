@@ -17,6 +17,8 @@ import script.plugin.api.ScriptSupportAPI;
 
 public class Autogeneration implements ScriptAPI {
 	
+	public static Autogeneration INSTANCE = new Autogeneration();
+	
 	private static Boolean triedGenerate = false;
 	
 	public static void Autogenerate(ScriptSupport main) {

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import minestom.events.MinestomEvents;
 import minestom.generation.Autogeneration;
 import net.minestom.server.extensions.Extension;
 import script.plugin.api.ScriptAPI;
@@ -23,7 +24,8 @@ public class ScriptSupport extends Extension {
 	
 	@Override
 	public void preInitialize() {
-		this.addAPI(Autogeneration::Autogenerate);
+		this.addAPI(Autogeneration.INSTANCE);
+		this.addAPI(MinestomEvents.INSTANCE);
 	}
 	
 	@Override
